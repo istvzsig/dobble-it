@@ -1,8 +1,8 @@
 export default class Card {
-    constructor(data) {
+    constructor(data, size = 100) {
         this.buffer = document.createElement("canvas");
-        this.width = 100;
-        this.height = 100;
+        this.width = size;
+        this.height = size;
         this.buffer.width = this.width;
         this.buffer.height = this.height;
         this.isGrabbed = false;
@@ -26,7 +26,7 @@ export default class Card {
         const context = this.buffer.getContext("2d");
 
         context.fillStyle = this.index % 2 ? "red" : "blue";
-        context.fillRect(0, 0, 100, 100);
+        context.fillRect(0, 0, this.width, this.height);
 
         let x = player.orientation === "HORIZONTAL" ? this.left : this.x;
         let y = player.orientation === "HORIZONTAL" ? this.y : this.top;
