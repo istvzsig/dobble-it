@@ -2,23 +2,7 @@ import Matrix from "./Matrix.js";
 import Player from "./Player.js";
 import Card from "./Card.js";
 import LayerManager from "./LayerManager.js";
-
-// TEST PLAYERS
-const players = [
-    { name: "Pista", x: 2.5, y: 5, orientation: "HORIZONTAL" },
-    { name: "Ors", x: 0, y: 2, orientation: "VERTICAL" },
-    { name: "Marosan", x: 1, y: 0, orientation: "HORIZONTAL" },
-    { name: "Buznyak", x: 4, y: 0, orientation: "HORIZONTAL" },
-    { name: "Geza", x: 6, y: 2, orientation: "VERTICAL" },
-];
-
-// CREATE PLAYERS
-const PLAYERS = players.map(data => {
-    const player = new Player(data.x, data.y, data.orientation);
-    player.addCards([new Card(data), new Card(data)]);
-    return player;
-})
-
+import { playerData } from "./test-players.js";
 
 export default class DobbleIt {
     constructor() {
@@ -28,14 +12,28 @@ export default class DobbleIt {
         this.layers = new LayerManager();
         this.matrix = new Matrix();
         this.layers.add(this.matrix);
-
-        this.players = PLAYERS;
         this.init();
     }
     init() {
+        this.createPlayers();
         this.players.forEach(player => {
             this.layers.add(player);
         });
+        this.animate();
+    }
+    createPlayers() {
+        playerData.forEach(data => {
+            const player = new Player(data.name, data.x, data.y, data.orientation);
+            player.addCards([new Card(data), new Card(data)]);
+            this.players.push(player);
+        });
+    }
+    animate() {
+        this.players.forEach(player => {
+            player.cards.forEach(card => {
+                card.onMouseEvent(this.canvas, player);
+            })
+        })
     }
     start() {
         this.layers.draw(this.ctx, ...this.players);
