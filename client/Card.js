@@ -24,20 +24,14 @@ export default class Card {
     }
     draw(ctx, player) {
         const context = this.buffer.getContext("2d");
+
         context.fillStyle = this.index % 2 ? "red" : "blue";
         context.fillRect(0, 0, 100, 100);
 
         let x = player.orientation === "HORIZONTAL" ? this.left : this.x;
         let y = player.orientation === "HORIZONTAL" ? this.y : this.top;
 
-        // console.log(player.orientation)
-
-        ctx.drawImage(
-            this.buffer,
-            x, y
-            // player.orientation === "HORIZONTAL" ? player.width * player.index : 0,
-            // player.orientation === "HORIZONTAL" ? 0 : player.height * player.index
-        );
+        ctx.drawImage(this.buffer, x, y);
     }
     onMouseEvent(canvas, player) {
         const lastPosX = this.x;
