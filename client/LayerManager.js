@@ -5,9 +5,9 @@ export default class LayerManager {
     add(layer) {
         this.layers.push(layer);
     }
-    draw(ctx, args) {
+    draw(ctx) {
         this.layers.forEach(layer => {
-            layer.draw(ctx, args);
+            layer.draw(ctx);
         });
     }
 }
