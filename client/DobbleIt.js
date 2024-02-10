@@ -14,7 +14,6 @@ const players = [
 
 // CREATE PLAYERS
 const PLAYERS = players.map(data => {
-    console.log(data.orientation)
     const player = new Player(data.x, data.y, data.orientation);
     player.addCards([new Card(data), new Card(data)]);
     return player;
@@ -32,16 +31,10 @@ export default class DobbleIt {
 
         this.players = PLAYERS;
         this.init();
-
-        console.log(this.layers);
     }
     init() {
         this.players.forEach(player => {
             this.layers.add(player);
-            player.cards.forEach((card, i) => {
-                card.index = i;
-                this.layers.add(card);
-            })
         });
     }
     start() {

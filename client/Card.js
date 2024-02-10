@@ -53,7 +53,6 @@ export default class Card {
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
                 this.isGrabbed = true;
-                console.log(this)
             }
         });
         canvas.addEventListener("mouseup", _ => {
@@ -66,8 +65,11 @@ export default class Card {
             if (this.isGrabbed) {
                 let x = event.clientX;
                 let y = event.clientY;
-                this.x = (x - this.width / 2) - this.width * this.index;
-                this.y = y - this.height / 2;
+
+                let offsetX = player.orientation === "HORIZONTAL" ? this.width * this.index : 0;
+                let offsetY = player.orientation === "HORIZONTAL" ? 0 : this.height * this.index;
+                this.x = (x - this.width / 2) - offsetX;
+                this.y = y - this.height / 2 - offsetY;
             }
             canvas.getContext("2d").drawImage(this.buffer, this.x, this.y);
         });

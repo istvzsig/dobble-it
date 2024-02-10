@@ -17,6 +17,10 @@ export default class Player {
     }
 
     draw(ctx) {
+        this.cards.forEach((card, i) => {
+            card.index = i;
+            card.draw(ctx, this)
+        })
         ctx.drawImage(this.buffer, this.x, this.y);
     }
 }
