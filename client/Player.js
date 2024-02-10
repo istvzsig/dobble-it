@@ -1,16 +1,17 @@
 export default class Player {
-    constructor(name, x, y, orientation) {
+    constructor(name, x, y, orientation, size = 100) {
         this.name = name;
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
         this.rowIndex = x;
         this.colIndex = y;
-        this.x = this.rowIndex * 100;
-        this.y = this.colIndex * 100;
+        this.size = size;
+        this.x = this.rowIndex * this.size;
+        this.y = this.colIndex * this.size;
         this.cards = [];
         this.orientation = orientation;
-        this.w = this.orientation === "HORIZONTAL" ? 200 : 100;
-        this.h = this.orientation === "HORIZONTAL" ? 100 : 200;
+        this.w = this.orientation === "HORIZONTAL" ? this.size * 2 : this.size;
+        this.h = this.orientation === "HORIZONTAL" ? this.size : this.size * 2;
         this.buffer.width = this.w;
         this.buffer.height = this.h;
 
