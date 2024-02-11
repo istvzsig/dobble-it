@@ -1,4 +1,4 @@
-import DobbleIt from "./DobbleIt.js";
+import Game from "./classes/Game.js";
 
-const game = new DobbleIt();
+const game = new Game();
 game.start();

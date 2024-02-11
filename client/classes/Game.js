@@ -1,9 +1,8 @@
 import Matrix from "./Matrix.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
-import Card from "./Card.js";
 import LayerManager from "./LayerManager.js";
-import { playerData } from "./test-players.js";
+import { playerData } from "../test-players.js";
 
 export default class DobbleIt {
     constructor() {
