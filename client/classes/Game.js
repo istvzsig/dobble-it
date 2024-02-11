@@ -22,7 +22,6 @@ export default class Game {
             this.createPlayers(testPlayers);
             this.addLayers();
             this.enablePlayerInteractions();
-            console.log(image, "loaded")
         });
     }
     addLayers() {

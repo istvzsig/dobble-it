@@ -11,6 +11,7 @@ export default class Player {
         this.y = data.y * size;
         this.orientation = data.orientation;
         this.cards = [];
+        this.id = data.id;
 
     }
     addCards(deck, numberOfCards = 2) {
