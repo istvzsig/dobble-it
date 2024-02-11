@@ -33,6 +33,10 @@ export default class Card {
 
         ctx.drawImage(this.buffer, x, y);
     }
+    setPoistion(x, y) {
+        this.x = x;
+        this.y = y;
+    }
     onMouseEvent(canvas, player) {
         const lastPosX = this.x;
         const lastPosY = this.y;
@@ -51,9 +55,7 @@ export default class Card {
         });
         canvas.addEventListener("mouseup", _ => {
             this.isGrabbed = false;
-            // check interaction with others cards before reset positions
-            this.x = lastPosX;
-            this.y = lastPosY;
+            this.setPoistion(lastPosX, lastPosY);
         });
         canvas.addEventListener("mousemove", event => {
             if (this.isGrabbed) {
