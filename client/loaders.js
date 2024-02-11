@@ -3,3 +3,8 @@ export async function loadImage(url) {
     image.src = "./img/" + url;
     return image;
 }
+
+export async function loadJSON(url) {
+    return await fetch("./json" + url)
+        .then(data => data.json());
+}
