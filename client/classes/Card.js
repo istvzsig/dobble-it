@@ -24,6 +24,7 @@ export default class Card {
         const context = this.buffer.getContext("2d");
         let x = player.orientation === "HORIZONTAL" ? this.left : this.x;
         let y = player.orientation === "HORIZONTAL" ? this.y : this.top;
+        context.clearRect(0, 0, this.width, this.height);
         context.drawImage(this.image, 0, 0, this.width, this.height);
         ctx.drawImage(this.buffer, x, y);
     }
