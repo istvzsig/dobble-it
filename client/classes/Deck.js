@@ -13,7 +13,7 @@ export default class Deck {
         let topCard = this.cards[0];
         topCard.buffer.width = 200;
         topCard.buffer.height = 200;
-        topCard.buffer.getContext("2d").fillRect(0, 0, 200, 200)
+        topCard.buffer.getContext("2d").drawImage(topCard.image, 0, 0, topCard.buffer.width, topCard.buffer.height)
         ctx.drawImage(topCard.buffer, 250, 200)
     }
 }
