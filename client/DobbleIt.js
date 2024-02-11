@@ -1,5 +1,6 @@
 import Matrix from "./Matrix.js";
 import Player from "./Player.js";
+import Deck from "./Deck.js";
 import Card from "./Card.js";
 import LayerManager from "./LayerManager.js";
 import { playerData } from "./test-players.js";
@@ -11,24 +12,29 @@ export default class DobbleIt {
         this.players = [];
         this.layers = new LayerManager();
         this.matrix = new Matrix();
-        this.layers.add(this.matrix);
+        this.deck = new Deck();
         this.init();
     }
     init() {
         this.createPlayers();
+        this.addLayers();
+        this.enablePlayerInteractions();
+
+    }
+    addLayers() {
+        this.layers.add(this.matrix);
         this.players.forEach(player => {
             this.layers.add(player);
         });
-        this.animate();
     }
     createPlayers() {
         playerData.forEach(data => {
-            const player = new Player(data.name, data.x, data.y, data.orientation);
-            player.addCards([new Card(data), new Card(data)]);
+            const player = new Player(data);
+            player.addCards(this.deck);
             this.players.push(player);
         });
     }
-    animate() {
+    enablePlayerInteractions() {
         this.players.forEach(player => {
             player.cards.forEach(card => {
                 card.onMouseEvent(this.canvas, player);

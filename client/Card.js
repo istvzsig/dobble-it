@@ -1,13 +1,13 @@
 export default class Card {
-    constructor(data, size = 100) {
+    constructor(size = 100) {
         this.buffer = document.createElement("canvas");
         this.width = size;
         this.height = size;
         this.buffer.width = this.width;
         this.buffer.height = this.height;
         this.isGrabbed = false;
-        this.x = data.x * this.width;
-        this.y = data.y * this.height;
+        // this.x = player.x * this.width;
+        // this.y = player.y * this.height;
 
     }
     get left() {
