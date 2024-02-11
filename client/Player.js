@@ -3,17 +3,14 @@ export default class Player {
         this.name = data.name;
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
-        this.rowIndex = data.x;
-        this.colIndex = data.y;
-        this.size = size;
-        this.x = this.rowIndex * this.size;
-        this.y = this.colIndex * this.size;
-        this.cards = [];
-        this.orientation = data.orientation;
-        this.w = this.orientation === "HORIZONTAL" ? this.size * 2 : this.size;
-        this.h = this.orientation === "HORIZONTAL" ? this.size : this.size * 2;
+        this.w = this.orientation === "HORIZONTAL" ? size * 2 : size;
+        this.h = this.orientation === "HORIZONTAL" ? size : size * 2;
         this.buffer.width = this.w;
         this.buffer.height = this.h;
+        this.x = data.x * size;
+        this.y = data.y * size;
+        this.orientation = data.orientation;
+        this.cards = [];
 
     }
     addCards(deck, numberOfCards = 2) {
