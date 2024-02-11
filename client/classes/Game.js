@@ -18,7 +18,8 @@ export default class Game {
         Promise.all([
             loadImage("card-back.png"),
             loadJSON("test-players"),
-        ]).then(([image, testPlayers]) => {
+        ]).then(([cardImage, testPlayers]) => {
+            this.createDeck(cardImage, 55);
             this.createPlayers(testPlayers);
             this.addLayers();
             this.enablePlayerInteractions();
@@ -31,9 +32,12 @@ export default class Game {
             this.layers.add(layer);
         });
     }
+    createDeck(cardImage, size) {
+        this.deck.create(cardImage, size)
+    }
     createPlayers(playerData) {
         playerData.forEach(data => {
-            const player = new Player(data);
+            const player = new Player(data, 100);
             player.addCards(this.deck);
             this.players.push(player);
         });
@@ -42,8 +46,8 @@ export default class Game {
         this.players.forEach(player => {
             player.cards.forEach(card => {
                 card.onMouseEvent(this.canvas, player);
-            })
-        })
+            });
+        });
     }
     start() {
         this.layers.draw(this.ctx, ...this.players);

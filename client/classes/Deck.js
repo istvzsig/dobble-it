@@ -1,13 +1,13 @@
 import Card from "./Card.js";
 
 export default class Deck {
-    constructor(len = 55) {
+    constructor() {
         this.cards = [];
+    }
+    create(cardImage, len = 55) {
         while (len--) {
-            this.cards.push(new Card())
+            this.cards.push(new Card(cardImage, 100))
         }
-
-        // return this.cards;
     }
     draw(ctx) {
         let topCard = this.cards[0];

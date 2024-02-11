@@ -1,14 +1,12 @@
 export default class Card {
-    constructor(size = 100) {
+    constructor(image, size) {
         this.buffer = document.createElement("canvas");
         this.width = size;
         this.height = size;
         this.buffer.width = this.width;
         this.buffer.height = this.height;
         this.isGrabbed = false;
-        // this.x = player.x * this.width;
-        // this.y = player.y * this.height;
-
+        this.image = image;
     }
     get left() {
         return this.x + (this.width * this.index);
@@ -24,13 +22,9 @@ export default class Card {
     }
     draw(ctx, player) {
         const context = this.buffer.getContext("2d");
-
-        context.fillStyle = this.index % 2 ? "red" : "blue";
-        context.fillRect(0, 0, this.width, this.height);
-
         let x = player.orientation === "HORIZONTAL" ? this.left : this.x;
         let y = player.orientation === "HORIZONTAL" ? this.y : this.top;
-
+        context.drawImage(this.image, 0, 0, this.width, this.height);
         ctx.drawImage(this.buffer, x, y);
     }
     setPoistion(x, y) {
