@@ -15,7 +15,7 @@ export default class Player {
     }
     addCards(deck, numberOfCards = 2) {
         while (numberOfCards--) {
-            const card = deck.shift();
+            const card = deck.cards.shift();
             card.x = this.x;
             card.y = this.y;
             this.cards.push(card)
@@ -27,6 +27,7 @@ export default class Player {
             card.index = i;
             card.draw(ctx, this)
         })
+        // this.context.fillRect(0, 0, this.buffer.width, this.buffer.height)
         ctx.drawImage(this.buffer, this.x, this.y);
     }
 }

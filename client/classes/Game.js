@@ -22,8 +22,9 @@ export default class Game {
     }
     addLayers() {
         this.layers.add(this.matrix);
-        this.players.forEach(player => {
-            this.layers.add(player);
+        this.layers.add(this.deck);
+        this.players.forEach(layer => {
+            this.layers.add(layer);
         });
     }
     createPlayers() {
