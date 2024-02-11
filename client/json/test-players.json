@@ -1,0 +1,37 @@
+[
+    {
+        "name":"Psysta",
+        "x": 2.5,
+        "y": 5,
+        "orientation": "HORIZONTAL",
+        "id": 0
+    },
+    {
+        "name":"Ors",
+        "x": 0,
+        "y": 2,
+        "orientation": "VERTICAL",
+        "id": 1
+    },
+    {
+        "name":"Marosan",
+        "x": 1,
+        "y": 0,
+        "orientation": "HORIZONTAL",
+        "id": 2
+    },
+    {
+        "name":"Sny",
+        "x": 4,
+        "y": 0,
+        "orientation": "HORIZONTAL",
+        "id": 3
+    },
+    {
+        "name":"Geza",
+        "x": 6,
+        "y": 2,
+        "orientation": "VERTICAL",
+        "id": 4
+    }
+]
