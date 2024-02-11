@@ -4,7 +4,7 @@ import Deck from "./Deck.js";
 import LayerManager from "./LayerManager.js";
 import { playerData } from "../test-players.js";
 
-export default class DobbleIt {
+export default class Game {
     constructor() {
         this.canvas = document.getElementById("game");
         this.ctx = this.canvas.getContext("2d");
