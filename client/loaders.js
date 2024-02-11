@@ -5,6 +5,6 @@ export async function loadImage(url) {
 }
 
 export async function loadJSON(url) {
-    return await fetch("./json" + url)
-        .then(data => data.json());
+    const data = await fetch("./json/" + url + ".json");
+    return data.json();
 }
