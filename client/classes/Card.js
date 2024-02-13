@@ -1,12 +1,13 @@
-export default class Card {
-    constructor(image, size) {
+import Entity from "./Entity.js";
+
+export default class Card extends Entity {
+    constructor(image) {
+        super(100);
         this.buffer = document.createElement("canvas");
-        this.width = size;
-        this.height = size;
+        this.image = image;
         this.buffer.width = this.width;
         this.buffer.height = this.height;
         this.isGrabbed = false;
-        this.image = image;
     }
     get left() {
         return this.x + (this.width * this.index);

@@ -1,14 +1,17 @@
-export default class Player {
-    constructor(data, size = 100) {
+import Entity from "./Entity.js";
+
+export default class Player extends Entity {
+    constructor(data) {
+        super(100);
         this.name = data.name;
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
-        this.w = this.orientation === "HORIZONTAL" ? size * 2 : size;
-        this.h = this.orientation === "HORIZONTAL" ? size : size * 2;
+        this.w = this.orientation === "HORIZONTAL" ? this.width * 2 : this.width;
+        this.h = this.orientation === "HORIZONTAL" ? this.height : this.height * 2;
         this.buffer.width = this.w;
         this.buffer.height = this.h;
-        this.x = data.x * size;
-        this.y = data.y * size;
+        this.x = data.x * this.width;
+        this.y = data.y * this.height;
         this.orientation = data.orientation;
         this.cards = [];
         this.id = data.id;
