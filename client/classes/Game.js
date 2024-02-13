@@ -1,5 +1,5 @@
 import Matrix from "./Matrix.js";
-import LayerManager from "./LayerManager.js";
+import Layers from "./Layers.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
 import { loadImage, loadJSON } from "../loaders.js";
@@ -9,7 +9,7 @@ export default class Game {
         this.canvas = document.getElementById("game");
         this.ctx = this.canvas.getContext("2d");
         this.players = [];
-        this.layers = new LayerManager();
+        this.layers = new Layers();
         this.matrix = new Matrix();
         this.deck = new Deck();
         this.init();
