@@ -1,6 +1,9 @@
 export async function loadImage(url) {
+    const data = await fetch("./img/" + url);
+
     const image = new Image();
-    image.src = "./img/" + url;
+    image.src = URL.createObjectURL(await data.blob());
+
     return image;
 }
 
