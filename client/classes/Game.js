@@ -1,7 +1,7 @@
 import Matrix from "./Matrix.js";
+import LayerManager from "./LayerManager.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
-import LayerManager from "./LayerManager.js";
 import { loadImage, loadJSON } from "../loaders.js";
 
 export default class Game {
@@ -14,26 +14,26 @@ export default class Game {
         this.deck = new Deck();
         this.init();
     }
-    init() {
-        Promise.all([
-            loadImage("card-back.png"),
-            loadJSON("test-players"),
-        ]).then(([cardImage, testPlayers]) => {
-            this.createDeck(cardImage, 55);
-            this.createPlayers(testPlayers);
-            this.addLayers();
-            this.enablePlayerInteractions();
-        });
+    async init() {
+        const cardImage = await loadImage("card-back.png");
+        const testPlayers = await loadJSON("test-players");
+
+        this.createDeck(cardImage, 55);
+        this.createPlayers(testPlayers);
+        this.addLayers();
+        this.enablePlayerInteractions();
     }
     addLayers() {
-        this.layers.add(this.matrix);
+        // this.layers.add(this.matrix);
         this.layers.add(this.deck);
-        this.players.forEach(layer => {
-            this.layers.add(layer);
+        this.players.forEach(player => {
+            player.cards.forEach(card => {
+                this.layers.add(card, player);
+            });
         });
     }
     createDeck(cardImage, size) {
-        this.deck.create(cardImage, size)
+        this.deck.create(cardImage, size);
     }
     createPlayers(playerData) {
         playerData.forEach(data => {
