@@ -1,5 +1,5 @@
 import Matrix from "./Matrix.js";
-import Layers from "./Layers.js";
+import LayerManager from "./Layers.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
 import { loadImage, loadJSON } from "../loaders.js";
@@ -7,50 +7,50 @@ import { loadImage, loadJSON } from "../loaders.js";
 export default class Game {
     constructor() {
         this.canvas = document.getElementById("game");
-        this.ctx = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext("2d");
         this.players = [];
-        this.layers = new Layers();
-        this.matrix = new Matrix();
-        this.deck = new Deck();
+        this.layerManager = new LayerManager();
+        this.matrix = new Matrix(7, 6, 100);
+        this.deck = new Deck(200, 200, 250, 200);
         this.init();
     }
     async init() {
+        // const tableBackground = await loadImage("table-background.jpg");
         const cardImage = await loadImage("card-back.png");
         const testPlayers = await loadJSON("test-players");
 
-        this.createDeck(cardImage, 55);
-        this.createPlayers(testPlayers);
-        this.addLayers();
+        this.createTestPlayers(testPlayers);
+
+        this.deck.create(cardImage, 55);
+        this.deck.shuffle(1);
+
+        this.layerManager.add(this.matrix);
+        this.layerManager.add(this.deck);
+        this.players.forEach(player => {
+            player.addCards(this.deck);
+            this.layerManager.add(player);
+        });
         this.enablePlayerInteractions();
     }
-    addLayers() {
-        // this.layers.add(this.matrix);
-        this.layers.add(this.deck);
-        this.players.forEach(player => {
-            player.cards.forEach(card => {
-                this.layers.add(card, player);
-            });
-        });
-    }
-    createDeck(cardImage, size) {
-        this.deck.create(cardImage, size);
-    }
-    createPlayers(playerData) {
-        playerData.forEach(data => {
-            const player = new Player(data, 100);
-            player.addCards(this.deck);
+    createTestPlayers(playersData) {
+        playersData.forEach(data => {
+            const player = new Player(data);
             this.players.push(player);
         });
     }
     enablePlayerInteractions() {
         this.players.forEach(player => {
+            this.layerManager.add(player);
             player.cards.forEach(card => {
                 card.onMouseEvent(this.canvas, player);
             });
         });
     }
-    start() {
-        this.layers.draw(this.ctx, ...this.players);
+    drawBackground() {
+        this.context.drawImage(tableBackground, 0, 0, this.canvas.width, this.canvas.height);
+    }
+    start(time = 0) {
+        this.layerManager.draw(this.context);
         window.requestAnimationFrame(this.start.bind(this));
     }
 }

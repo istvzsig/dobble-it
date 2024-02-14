@@ -1,37 +1,50 @@
-import Entity from "./Entity.js";
+import { Pos } from '../math.js';
 
-export default class Player extends Entity {
+export default class Player {
     constructor(data) {
-        super(100);
-        this.name = data.name;
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
-        this.w = this.orientation === "HORIZONTAL" ? this.width * 2 : this.width;
-        this.h = this.orientation === "HORIZONTAL" ? this.height : this.height * 2;
-        this.buffer.width = this.w;
-        this.buffer.height = this.h;
-        this.x = data.x * this.width;
-        this.y = data.y * this.height;
-        this.orientation = data.orientation;
-        this.cards = [];
         this.id = data.id;
-
+        this.name = data.name;
+        this.pos = new Pos(data.posX * 100, data.posY * 100)
+        this.orientation = data.orientation;
+        this.width = this.isHorizontal ? 200 : 100;
+        this.height = this.isHorizontal ? 100 : 200;
+        this.buffer.width = this.width;
+        this.buffer.height = this.height;
+        this.cards = [];
+    }
+    get isHorizontal() {
+        return this.orientation === "HORIZONTAL";
     }
     addCards(deck, numberOfCards = 2) {
-        while (numberOfCards--) {
+        if (!deck) { return }
+        for (let i = 0; i < numberOfCards; i++) {
             const card = deck.cards.shift();
-            card.x = this.x;
-            card.y = this.y;
-            this.cards.push(card)
+            card.pos.x = this.isHorizontal ? card.pos.x + (i * card.width) : card.pos.x;
+            card.pos.y = this.isHorizontal ? card.pos.y : card.pos.y + (i * card.height);
+            this.cards.push(card);
         }
     }
-
-    draw(ctx) {
-        this.cards.forEach((card, i) => {
-            card.index = i;
-            card.draw(ctx, this)
-        })
+    changeColor(color = "blue") {
+        this.context.fillStyle = color;
+        this.context.fillRect(0, 0, 100, 100);
+    }
+    drawStroke(color = "blue") {
+        this.context.strokeStyle = color;
+        this.context.lineWidth = 15;
+        this.context.strokeRect(0, 0, this.buffer.width, this.buffer.height)
+    }
+    drawCards() {
+        this.cards.forEach(card => {
+            card.draw(this.context, this);
+            // this.context.fillRect(0, 0, card.width, 55)
+        });
+    }
+    draw(context) {
+        this.drawStroke();
         // this.context.fillRect(0, 0, this.buffer.width, this.buffer.height)
-        ctx.drawImage(this.buffer, this.x, this.y);
+        this.drawCards();
+        context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }

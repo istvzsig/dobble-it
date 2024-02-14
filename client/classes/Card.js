@@ -1,57 +1,54 @@
-import Entity from "./Entity.js";
+import { Pos, Perimeter } from '../math.js';
 
-export default class Card extends Entity {
-    constructor(image) {
-        super(100);
+export default class Card {
+    constructor(id = 0, image = Image, width = 0, height = 0, posX = 0, posY = 0) {
         this.buffer = document.createElement("canvas");
+        this.context = this.buffer.getContext("2d");
+        this.id = id;
         this.image = image;
-        this.buffer.width = this.width;
-        this.buffer.height = this.height;
+        this.width = width; //perimeter
+        this.height = height;
+        this.pos = new Pos(posX, posY);
+        this.buffer.width = width;
+        this.buffer.height = height;
+        this.index = null;
         this.isGrabbed = false;
     }
     get left() {
-        return this.x + (this.width * this.index);
+        return this.pos.x + (this.width * this.index);
     }
     get right() {
-        return (this.x + this.width) + (this.width * this.index);
+        return (this.pos.x + this.width) + (this.width * this.index);
     }
     get top() {
-        return this.y + (this.height * this.index);
+        return this.pos.y + (this.height * this.index);
     }
     get bottom() {
-        return (this.y + this.height) + (this.height * this.index);
-    }
-    draw(ctx, player) {
-        const context = this.buffer.getContext("2d");
-        let x = player.orientation === "HORIZONTAL" ? this.left : this.x;
-        let y = player.orientation === "HORIZONTAL" ? this.y : this.top;
-        context.clearRect(0, 0, this.width, this.height);
-        context.drawImage(this.image, 0, 0, this.width, this.height);
-        ctx.drawImage(this.buffer, x, y);
-    }
-    setPoistion(x, y) {
-        this.x = x;
-        this.y = y;
+        return (this.pos.y + this.height) + (this.height * this.index);
     }
     onMouseEvent(canvas, player) {
-        const lastPosX = this.x;
-        const lastPosY = this.y;
+        const lastPosX = this.pos.x;
+        const lastPosY = this.pos.y;
         canvas.addEventListener("mousedown", event => {
             let ex = event.clientX;
             let ey = event.clientY;
 
-            let left = player.orientation === "HORIZONTAL" ? this.left : this.x;
-            let right = player.orientation === "HORIZONTAL" ? this.right : this.x + this.width;
-            let top = player.orientation === "HORIZONTAL" ? this.y : this.top;
-            let bottom = player.orientation === "HORIZONTAL" ? this.y + this.height : this.bottom;
+            let left = player.isHorizontal ? this.left : this.x;
+            let right = player.isHorizontal ? this.right : this.x + this.width;
+            let top = player.isHorizontal ? this.pos.y : this.top;
+            let bottom = player.isHorizontal ? this.pos.y + this.height : this.bottom;
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
                 this.isGrabbed = true;
+                console.log(player.id)
+                // this.context.fillStyle = "green"
             }
+            this.drawStroke("green");
+            this.draw(canvas.getContext("2d"))
         });
         canvas.addEventListener("mouseup", _ => {
-            this.isGrabbed = false;
             this.setPoistion(lastPosX, lastPosY);
+            this.isGrabbed = false;
         });
         canvas.addEventListener("mousemove", event => {
             if (this.isGrabbed) {
@@ -60,10 +57,20 @@ export default class Card extends Entity {
 
                 let offsetX = player.orientation === "HORIZONTAL" ? this.width * this.index : 0;
                 let offsetY = player.orientation === "HORIZONTAL" ? 0 : this.height * this.index;
-                this.x = (x - this.width / 2) - offsetX;
-                this.y = y - this.height / 2 - offsetY;
             }
-            canvas.getContext("2d").drawImage(this.buffer, this.x, this.y);
+            // debugger;
+            canvas.getContext("2d").drawImage(this.buffer, this.pos.x, this.pos.y);
         });
+    }
+    drawStroke(color = "red") {
+        this.context.strokeStyle = color;
+        this.context.fillStyle = color;
+        this.context.lineWidth = 15;
+        this.context.strokeRect(this.pos.x, this.pos.y, this.buffer.width, this.buffer.height)
+    }
+    draw(context) {
+        this.context.drawImage(this.image, 0, 0, this.width, this.height);
+        this.drawStroke();
+        context.drawImage(this.buffer, this.pos.x, this.pos.y, this.width, this.height);
     }
 }

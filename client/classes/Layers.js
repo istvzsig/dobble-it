@@ -1,13 +1,13 @@
-export default class Layers {
+export default class LayerManager {
     constructor() {
         this.layers = [];
     }
     add(layer) {
         this.layers.push(layer);
     }
-    draw(ctx) {
+    draw(context) {
         this.layers.forEach(layer => {
-            layer.draw(ctx);
+            layer.draw(context);
         });
     }
 }
