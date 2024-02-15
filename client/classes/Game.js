@@ -19,24 +19,30 @@ export default class Game {
         const cardImage = await loadImage("card-back.png");
         const testPlayers = await loadJSON("test-players");
 
-        this.createTestPlayers(testPlayers);
-
         this.deck.create(cardImage, 55);
-        this.deck.shuffle(1);
+        this.deck.shuffle();
 
-        this.layerManager.add(this.matrix);
-        this.layerManager.add(this.deck);
+        this.createTestPlayers(testPlayers);
+        this.createLayers();
+
         this.players.forEach(player => {
             player.addCards(this.deck);
+            player.cards.forEach(card => {
+                card.onMouseEvent(this.canvas, player);
+                this.layerManager.add(card);
+            });
             this.layerManager.add(player);
         });
-        this.enablePlayerInteractions();
+        // this.enablePlayerInteractions();
     }
     createTestPlayers(playersData) {
         playersData.forEach(data => {
-            const player = new Player(data);
-            this.players.push(player);
+            this.players.push(new Player(data));
         });
+    }
+    createLayers() {
+        this.layerManager.add(this.matrix);
+        this.layerManager.add(this.deck);
     }
     enablePlayerInteractions() {
         this.players.forEach(player => {

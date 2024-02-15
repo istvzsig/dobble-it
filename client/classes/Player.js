@@ -6,7 +6,7 @@ export default class Player {
         this.context = this.buffer.getContext("2d");
         this.id = data.id;
         this.name = data.name;
-        this.pos = new Pos(data.posX * 100, data.posY * 100)
+        this.pos = new Pos(data.posX * 100, data.posY * 100);
         this.orientation = data.orientation;
         this.width = this.isHorizontal ? 200 : 100;
         this.height = this.isHorizontal ? 100 : 200;
@@ -21,8 +21,9 @@ export default class Player {
         if (!deck) { return }
         for (let i = 0; i < numberOfCards; i++) {
             const card = deck.cards.shift();
-            card.pos.x = this.isHorizontal ? card.pos.x + (i * card.width) : card.pos.x;
-            card.pos.y = this.isHorizontal ? card.pos.y : card.pos.y + (i * card.height);
+            card.index = i;
+            card.pos.x = this.isHorizontal ? this.pos.x + card.width * card.index : this.pos.x;
+            card.pos.y = this.isHorizontal ? this.pos.y : this.pos.y + card.height * card.index;
             this.cards.push(card);
         }
     }
@@ -44,7 +45,7 @@ export default class Player {
     draw(context) {
         this.drawStroke();
         // this.context.fillRect(0, 0, this.buffer.width, this.buffer.height)
-        this.drawCards();
+        // this.drawCards();
         context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }

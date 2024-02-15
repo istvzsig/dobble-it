@@ -11,66 +11,48 @@ export default class Card {
         this.pos = new Pos(posX, posY);
         this.buffer.width = width;
         this.buffer.height = height;
-        this.index = null;
+        // this.index = 0;
         this.isGrabbed = false;
     }
-    get left() {
-        return this.pos.x + (this.width * this.index);
-    }
-    get right() {
-        return (this.pos.x + this.width) + (this.width * this.index);
-    }
-    get top() {
-        return this.pos.y + (this.height * this.index);
-    }
-    get bottom() {
-        return (this.pos.y + this.height) + (this.height * this.index);
+    setPoistion(x, y) {
+        this.pos.x = x;
+        this.pos.y = y;
     }
     onMouseEvent(canvas, player) {
         const lastPosX = this.pos.x;
         const lastPosY = this.pos.y;
         canvas.addEventListener("mousedown", event => {
-            let ex = event.clientX;
-            let ey = event.clientY;
+            const ex = event.clientX;
+            const ey = event.clientY;
 
-            let left = player.isHorizontal ? this.left : this.x;
-            let right = player.isHorizontal ? this.right : this.x + this.width;
-            let top = player.isHorizontal ? this.pos.y : this.top;
-            let bottom = player.isHorizontal ? this.pos.y + this.height : this.bottom;
+            const left = player.isHorizontal ? player.pos.x + this.width * this.index : player.pos.x;
+            const right = player.isHorizontal ? (player.pos.x + this.width * this.index) + this.width : player.pos.x + this.width;
+            const top = player.isHorizontal ? player.pos.y : player.pos.y + this.height * this.index;
+            const bottom = player.isHorizontal ? player.pos.y + this.height : player.pos.y + this.height * this.index + this.height;
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
                 this.isGrabbed = true;
-                console.log(player.id)
-                // this.context.fillStyle = "green"
             }
-            this.drawStroke("green");
-            this.draw(canvas.getContext("2d"))
         });
         canvas.addEventListener("mouseup", _ => {
-            this.setPoistion(lastPosX, lastPosY);
             this.isGrabbed = false;
+            this.setPoistion(lastPosX, lastPosY);
+
         });
         canvas.addEventListener("mousemove", event => {
             if (this.isGrabbed) {
                 let x = event.clientX;
                 let y = event.clientY;
-
-                let offsetX = player.orientation === "HORIZONTAL" ? this.width * this.index : 0;
-                let offsetY = player.orientation === "HORIZONTAL" ? 0 : this.height * this.index;
+                this.pos.x = x - this.width / 2;
+                this.pos.y = y - this.height / 2;
+                this.draw(canvas.getContext("2d"));
             }
             // debugger;
             canvas.getContext("2d").drawImage(this.buffer, this.pos.x, this.pos.y);
         });
     }
-    drawStroke(color = "red") {
-        this.context.strokeStyle = color;
-        this.context.fillStyle = color;
-        this.context.lineWidth = 15;
-        this.context.strokeRect(this.pos.x, this.pos.y, this.buffer.width, this.buffer.height)
-    }
     draw(context) {
         this.context.drawImage(this.image, 0, 0, this.width, this.height);
-        this.drawStroke();
-        context.drawImage(this.buffer, this.pos.x, this.pos.y, this.width, this.height);
+        context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }
