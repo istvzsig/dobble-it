@@ -1,5 +1,6 @@
-import Matrix from "./Matrix.js";
 import LayerManager from "./Layers.js";
+import Matrix from "./Matrix.js";
+import Background from "./Background.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
 import { loadImage, loadJSON } from "../loaders.js";
@@ -11,15 +12,18 @@ export default class Game {
         this.players = [];
         this.layerManager = new LayerManager();
         this.matrix = new Matrix(7, 6, 100);
+        this.background = new Background(this.canvas.width, this.canvas.height);
         this.deck = new Deck(200, 200, 250, 200);
         this.init();
     }
     async init() {
-        // const tableBackground = await loadImage("table-background.jpg");
-        const cardImage = await loadImage("card-back.png");
+        const tableBackgroundImage = await loadImage("table-background.jpg");
+        this.background.image = tableBackgroundImage;
+
+        const cardImageBack = await loadImage("card-back.png");
         const testPlayers = await loadJSON("test-players");
 
-        this.deck.create(cardImage, 55);
+        this.deck.create(cardImageBack, 55);
         this.deck.shuffle();
 
         this.createTestPlayers(testPlayers);
@@ -40,7 +44,8 @@ export default class Game {
         });
     }
     createLayers() {
-        this.layerManager.add(this.matrix);
+        // this.layerManager.add(this.matrix);
+        this.layerManager.add(this.background);
         this.layerManager.add(this.deck);
     }
     enablePlayerInteractions() {
@@ -50,9 +55,6 @@ export default class Game {
                 card.onMouseEvent(this.canvas, player);
             });
         });
-    }
-    drawBackground() {
-        this.context.drawImage(tableBackground, 0, 0, this.canvas.width, this.canvas.height);
     }
     start(time = 0) {
         this.layerManager.draw(this.context);
