@@ -18,7 +18,7 @@ export default class Card {
         this.pos.x = x;
         this.pos.y = y;
     }
-    onMouseEvent(canvas, player) {
+    onMouseEvent(canvas, player, layers) {
         const lastPosX = this.pos.x;
         const lastPosY = this.pos.y;
         canvas.addEventListener("mousedown", event => {
@@ -32,9 +32,13 @@ export default class Card {
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
                 this.isGrabbed = true;
+                layers[layers.length] = this;
             }
         });
         canvas.addEventListener("mouseup", _ => {
+            if (this.isGrabbed) {
+                layers.pop();
+            }
             this.isGrabbed = false;
             this.setPoistion(lastPosX, lastPosY);
 

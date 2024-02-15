@@ -28,10 +28,9 @@ export default class Game {
         this.players.forEach(player => {
             player.addCards(this.deck);
             player.cards.forEach(card => {
-                card.onMouseEvent(this.canvas, player);
                 this.layerManager.add(card);
+                card.onMouseEvent(this.canvas, player, this.layerManager.layers);
             });
-            this.layerManager.add(player);
         });
         // this.enablePlayerInteractions();
     }
