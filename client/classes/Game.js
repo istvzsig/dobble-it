@@ -31,6 +31,7 @@ export default class Game {
 
         this.players.forEach(player => {
             player.addCards(this.deck);
+            this.layerManager.add(player);
             player.cards.forEach(card => {
                 this.layerManager.add(card);
                 card.onMouseEvent(this.canvas, player, this.layerManager.layers);
@@ -44,13 +45,12 @@ export default class Game {
         });
     }
     createLayers() {
-        // this.layerManager.add(this.matrix);
-        this.layerManager.add(this.background);
+        this.layerManager.add(this.matrix);
+        // this.layerManager.add(this.background);
         this.layerManager.add(this.deck);
     }
     enablePlayerInteractions() {
         this.players.forEach(player => {
-            this.layerManager.add(player);
             player.cards.forEach(card => {
                 card.onMouseEvent(this.canvas, player);
             });
