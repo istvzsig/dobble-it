@@ -4,13 +4,3 @@ export class Pos {
         this.y = y;
     }
 }
-
-export class Perimeter {
-    constructor(w, h) {
-        this.w = w;
-        this.h = h;
-    }
-    get() {
-        return this.w * this.h;
-    }
-}
