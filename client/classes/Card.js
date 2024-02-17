@@ -1,4 +1,4 @@
-import { Pos, Perimeter } from '../math.js';
+import { Pos } from '../math.js';
 
 export default class Card {
     constructor(id = 0, image = Image, width = 0, height = 0, posX = 0, posY = 0) {
@@ -11,7 +11,6 @@ export default class Card {
         this.pos = new Pos(posX, posY);
         this.buffer.width = width;
         this.buffer.height = height;
-        // this.index = 0;
         this.isGrabbed = false;
     }
     setPoistion(x, y) {
