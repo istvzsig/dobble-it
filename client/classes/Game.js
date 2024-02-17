@@ -6,8 +6,8 @@ import Deck from "./Deck.js";
 import { loadImage, loadJSON } from "../loaders.js";
 
 export default class Game {
-    constructor() {
-        this.canvas = document.getElementById("game");
+    constructor(canvas) {
+        this.canvas = canvas;
         this.context = this.canvas.getContext("2d");
         this.players = [];
         this.layerManager = new LayerManager();
