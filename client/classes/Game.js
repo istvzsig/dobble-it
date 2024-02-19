@@ -2,19 +2,20 @@ import LayerManager from "./Layers.js";
 import Background from "./Background.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
+import { Size } from "../math.js";
 import { loadImage, loadJSON } from "../loaders.js";
+
 
 export default class Game {
     constructor() {
         this.canvas = document.getElementById("game");
         this.context = this.canvas.getContext("2d");
-        this.width = window.innerWidth;
-        this.height = window.innerHeight;
+        this.size = new Size(window.innerWidth, window.innerHeight);
+        this.canvas.width = this.size.width;
+        this.canvas.height = this.size.height;
         this.layerManager = new LayerManager();
         this.background = new Background(this.canvas.width, this.canvas.height);
-        this.deck = new Deck(55, 200, 200, this.width / 2, this.height / 2);
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this.deck = new Deck(55, 200, 200, this.size.width / 2, this.size.height / 2);
         this.players = [];
         this.init();
     }

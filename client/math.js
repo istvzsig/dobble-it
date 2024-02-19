@@ -4,3 +4,10 @@ export class Pos {
         this.y = y;
     }
 }
+
+export class Size {
+    constructor(w, h) {
+        this.width = w;
+        this.height = h;
+    }
+}

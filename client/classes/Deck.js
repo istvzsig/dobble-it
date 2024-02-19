@@ -1,11 +1,10 @@
-import { Pos } from "../math.js";
+import { Pos, Size } from "../math.js";
 import Card from "./Card.js";
 export default class Deck {
     constructor(numberOfCards, width, height, x, y) {
         this.numberOfCards = numberOfCards;
-        this.width = width;
-        this.height = height;
-        this.pos = new Pos(x - this.width / 2, y - this.height / 2);
+        this.size = new Size(width, height);
+        this.pos = new Pos(x - this.size.width / 2, y - this.size.height / 2);
         this.cards = [];
         this.frames = 0;
     }
@@ -31,8 +30,8 @@ export default class Deck {
     drawImage(topCard) {
         const buffer = topCard.buffer;
         const ctx = buffer.getContext("2d");
-        buffer.width = this.width;
-        buffer.height = this.height;
+        buffer.width = this.size.width;
+        buffer.height = this.size.height;
         ctx.drawImage(
             this.image,
             this.image.height * topCard.frameIndexX, 0,

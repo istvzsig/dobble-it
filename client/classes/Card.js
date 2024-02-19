@@ -1,4 +1,4 @@
-import { Pos } from '../math.js';
+import { Pos, Size } from '../math.js';
 
 export default class Card {
     constructor(id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
@@ -7,11 +7,10 @@ export default class Card {
         this.playerName = "";
         this.id = id;
         this.image = image;
-        this.width = width; //perimeter
-        this.height = height;
+        this.size = new Size(width, height);
         this.pos = new Pos(posX, posY);
-        this.buffer.width = width;
-        this.buffer.height = height;
+        this.buffer.width = this.size.width;
+        this.buffer.height = this.size.height;
         this.isGrabbed = false;
         this.frameIndexX = 0;
         this.frameIndexY = 0;
@@ -21,16 +20,16 @@ export default class Card {
         this.symbols = symbols;
     }
     get left() {
-        return this.player.isHorizontal ? this.player.pos.x + this.width * this.index : this.player.pos.x;
+        return this.player.isHorizontal ? this.player.pos.x + this.size.width * this.index : this.player.pos.x;
     }
     get right() {
-        return this.player.isHorizontal ? (this.player.pos.x + this.width * this.index) + this.width : this.player.pos.x + this.width;
+        return this.player.isHorizontal ? (this.player.pos.x + this.size.width * this.index) + this.size.width : this.player.pos.x + this.size.width;
     }
     get top() {
-        return this.player.isHorizontal ? this.player.pos.y : this.player.pos.y + this.height * this.index;
+        return this.player.isHorizontal ? this.player.pos.y : this.player.pos.y + this.size.height * this.index;
     }
     get bottom() {
-        return this.player.isHorizontal ? this.player.pos.y + this.height : this.player.pos.y + this.height * this.index + this.height;;
+        return this.player.isHorizontal ? this.player.pos.y + this.size.height : this.player.pos.y + this.size.height * this.index + this.size.height;;
     }
     flip() {
         if (this.flipped) {
@@ -94,8 +93,8 @@ export default class Card {
             if (this.isGrabbed) {
                 const x = event.clientX;
                 const y = event.clientY;
-                this.pos.x = x - this.width / 2;
-                this.pos.y = y - this.height / 2;
+                this.pos.x = x - this.size.width / 2;
+                this.pos.y = y - this.size.height / 2;
                 this.draw(canvas.getContext("2d"));
             }
             // debugger;
@@ -103,19 +102,19 @@ export default class Card {
         });
     }
     draw(context) {
-        this.context.clearRect(0, 0, this.width, this.height);
+        this.context.clearRect(0, 0, this.size.width, this.size.height);
         this.animationFrames++;
         // this.flip();
         this.context.drawImage(
             this.image, // image
             this.image.height * this.frameIndexX, // sx
-            this.height * this.frameIndexY, // sy
+            this.size.height * this.frameIndexY, // sy
             this.image.height, // sw
             this.image.height, // sh
             0, // dx
             0, // dy
-            this.width, // dw
-            this.height // dh
+            this.size.width, // dw
+            this.size.height // dh
         );
         context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
