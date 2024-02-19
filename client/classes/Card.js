@@ -1,7 +1,7 @@
 import { Pos } from '../math.js';
 
 export default class Card {
-    constructor(id = 0, image = Image, width = 0, height = 0, posX = 0, posY = 0) {
+    constructor(id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
         this.id = id;
@@ -16,15 +16,16 @@ export default class Card {
         this.frameIndexY = 0;
         this.flipped = false;
         this.animationFrames = 0;
-        this.animationFrameSequence = 4;
+        this.animationSqueanceRate = 1;
+        this.symbols = symbols;
     }
     flip() {
         if (this.flipped) {
-            if (this.animationFrames % this.animationFrameSequence == 0) {
+            if (this.animationFrames % this.animationSqueanceRate == 0) {
                 this.frameIndexX++;
                 if (this.frameIndexX > 9) {
                     this.frameIndexX = 10;
-                    // this.flipped = false;
+                    this.flipped = false;
                     this.animationFrames = 0;
                 }
             }
@@ -47,8 +48,8 @@ export default class Card {
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
                 layers[layers.length] = this;
-                this.isGrabbed = true;
                 this.flipped = true;
+                this.isGrabbed = true;
             }
         });
         canvas.addEventListener("mouseup", _ => {

@@ -10,10 +10,10 @@ export default class Deck {
         this.animationLen = 1000;
         this.flipped = false;
     }
-    create(cardImage, len = 55) {
+    create(cardImage, symbols, len = 55) {
         this.image = cardImage;
         for (let index = 0; index < len; ++index) {
-            const card = new Card(index, cardImage, 100, 100);
+            const card = new Card(index, cardImage, symbols[index], 100, 100);
             this.cards.push(card);
         }
     }

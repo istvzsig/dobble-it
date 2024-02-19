@@ -18,12 +18,13 @@ export default class Game {
     }
     async init() {
         const tableBackgroundImage = await loadImage("table-background.jpg");
+        const cardImageBack = await loadImage("card.png");
+        const testPlayers = await loadJSON("test-players");
+        const symbols = await loadJSON("symbol-combinations");
+
         this.background.image = tableBackgroundImage;
 
-        const cardImageBack = await loadImage("card-back-2.png");
-        const testPlayers = await loadJSON("test-players");
-
-        this.deck.create(cardImageBack, 55);
+        this.deck.create(cardImageBack, symbols, 55);
         this.deck.shuffle();
 
         this.createTestPlayers(testPlayers);
@@ -32,7 +33,7 @@ export default class Game {
         this.players.forEach(player => {
             player.addCards(this.deck);
             // this.layerManager.add(player);
-            player.cards.forEach(card => {
+            player.cards.forEach((card, i) => {
                 this.layerManager.add(card);
                 card.onMouseEvent(this.canvas, player, this.layerManager.layers);
             });
