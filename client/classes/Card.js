@@ -15,18 +15,19 @@ export default class Card {
         this.frameIndexX = 0;
         this.frameIndexY = 0;
         this.flipped = false;
-        this.frames = 0;
+        this.animationFrames = 0;
+        this.animationFrameSequence = 4;
     }
     flip() {
         if (this.flipped) {
-            this.frames++;
-            this.frameIndexX++;
-            if (this.frameIndexX > 9) {
-                this.frameIndexX = 10;
-                this.flipped = false;
+            if (this.animationFrames % this.animationFrameSequence == 0) {
+                this.frameIndexX++;
+                if (this.frameIndexX > 9) {
+                    this.frameIndexX = 10;
+                    // this.flipped = false;
+                    this.animationFrames = 0;
+                }
             }
-            // if (this.frames %  == 0) {
-            // }
         }
     }
     setPoistion(x, y) {
@@ -45,8 +46,9 @@ export default class Card {
             const bottom = player.isHorizontal ? player.pos.y + this.height : player.pos.y + this.height * this.index + this.height;
 
             if (ex > left && ex < right && ey > top && ey < bottom) {
-                this.isGrabbed = true;
                 layers[layers.length] = this;
+                this.isGrabbed = true;
+                this.flipped = true;
             }
         });
         canvas.addEventListener("mouseup", _ => {
@@ -55,7 +57,6 @@ export default class Card {
             }
             this.isGrabbed = false;
             this.setPoistion(lastPosX, lastPosY);
-
         });
         canvas.addEventListener("mousemove", event => {
             if (this.isGrabbed) {
@@ -71,17 +72,14 @@ export default class Card {
     }
     draw(context) {
         this.context.clearRect(0, 0, this.width, this.height);
-        // this.context.translate(0, 0);
-        // this.context.rotate(1);
-        // // this.context.translate(-100, -100);
-        // this.context.scale(1, -1)
+        this.animationFrames++;
         this.flip();
         this.context.drawImage(
             this.image, // image
-            500 * this.frameIndexX, // sx
+            this.image.height * this.frameIndexX, // sx
             this.height * this.frameIndexY, // sy
-            500, // sw
-            500, // sh
+            this.image.height, // sw
+            this.image.height, // sh
             0, // dx
             0, // dy
             this.width, // dw

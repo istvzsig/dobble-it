@@ -29,23 +29,12 @@ export default class Game {
         this.createTestPlayers(testPlayers);
         this.createLayers();
 
-
-
         this.players.forEach(player => {
             player.addCards(this.deck);
             // this.layerManager.add(player);
             player.cards.forEach(card => {
                 this.layerManager.add(card);
                 card.onMouseEvent(this.canvas, player, this.layerManager.layers);
-            });
-        });
-
-
-        window.addEventListener("mousedown", event => {
-            this.players.forEach(player => {
-                player.cards.forEach(card => {
-                    card.flipped = true;
-                });
             });
         });
     }
