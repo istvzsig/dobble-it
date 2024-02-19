@@ -20,7 +20,7 @@ export default class Game {
         const tableBackgroundImage = await loadImage("table-background.jpg");
         this.background.image = tableBackgroundImage;
 
-        const cardImageBack = await loadImage("card-back.png");
+        const cardImageBack = await loadImage("card-back-2.png");
         const testPlayers = await loadJSON("test-players");
 
         this.deck.create(cardImageBack, 55);
@@ -29,15 +29,25 @@ export default class Game {
         this.createTestPlayers(testPlayers);
         this.createLayers();
 
+
+
         this.players.forEach(player => {
             player.addCards(this.deck);
-            this.layerManager.add(player);
+            // this.layerManager.add(player);
             player.cards.forEach(card => {
                 this.layerManager.add(card);
                 card.onMouseEvent(this.canvas, player, this.layerManager.layers);
             });
         });
-        // this.enablePlayerInteractions();
+
+
+        window.addEventListener("mousedown", event => {
+            this.players.forEach(player => {
+                player.cards.forEach(card => {
+                    card.flipped = true;
+                });
+            });
+        });
     }
     createTestPlayers(playersData) {
         playersData.forEach(data => {
@@ -46,17 +56,10 @@ export default class Game {
     }
     createLayers() {
         this.layerManager.add(this.matrix);
-        // this.layerManager.add(this.background);
+        this.layerManager.add(this.background);
         this.layerManager.add(this.deck);
     }
-    enablePlayerInteractions() {
-        this.players.forEach(player => {
-            player.cards.forEach(card => {
-                card.onMouseEvent(this.canvas, player);
-            });
-        });
-    }
-    start(time = 0) {
+    start() {
         this.layerManager.draw(this.context);
         window.requestAnimationFrame(this.start.bind(this));
     }
