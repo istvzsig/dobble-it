@@ -50,14 +50,12 @@ export default class Deck {
         buffer.width = this.width;
         buffer.height = this.height;
 
-        this.flip(topCard);
-
         ctx.drawImage(
             this.image, // image
-            500 * topCard.frameIndexX, // sx
+            this.image.height * topCard.frameIndexX, // sx
             0, // sy
-            500, // sw
-            500, // sh
+            this.image.height, // sw
+            this.image.height, // sh
             0, // dx
             0, // dy
             buffer.width, // dw
