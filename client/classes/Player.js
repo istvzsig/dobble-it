@@ -17,7 +17,7 @@ export default class Player {
     get isHorizontal() {
         return this.orientation === "HORIZONTAL";
     }
-    addCards(deck, numberOfCards = 2) {
+    setCards(deck, numberOfCards = 2) {
         if (!deck) { return }
         for (let i = 0; i < numberOfCards; i++) {
             const card = deck.cards.shift();
@@ -26,18 +26,5 @@ export default class Player {
             card.pos.y = this.isHorizontal ? this.pos.y : this.pos.y + card.height * card.index;
             this.cards.push(card);
         }
-    }
-    changeColor(color = "blue") {
-        this.context.fillStyle = color;
-        this.context.fillRect(0, 0, 100, 100);
-    }
-    drawStroke(color = "blue") {
-        this.context.strokeStyle = color;
-        this.context.lineWidth = 15;
-        this.context.strokeRect(0, 0, this.buffer.width, this.buffer.height)
-    }
-    draw(context) {
-        this.drawStroke();
-        context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }

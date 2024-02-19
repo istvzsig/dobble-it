@@ -1,18 +1,17 @@
 import { Pos } from "../math.js";
 import Card from "./Card.js";
 export default class Deck {
-    constructor(width = 0, height = 0, posX = 0, posY = 0) {
+    constructor(numberOfCards, width, height, x, y) {
+        this.numberOfCards = numberOfCards;
         this.width = width;
         this.height = height;
-        this.pos = new Pos(posX, posY);
+        this.pos = new Pos(x - this.width / 2, y - this.height / 2);
         this.cards = [];
         this.frames = 0;
-        this.animationLen = 1000;
-        this.flipped = false;
     }
-    create(cardImage, symbols, len = 55) {
+    create(cardImage, symbols) {
         this.image = cardImage;
-        for (let index = 0; index < len; ++index) {
+        for (let index = 0; index < this.numberOfCards; ++index) {
             const card = new Card(index, cardImage, symbols[index], 100, 100);
             this.cards.push(card);
         }
@@ -27,40 +26,25 @@ export default class Deck {
     drawToCenter(context, card) {
         const canvas = context.canvas;
         const buffer = card.buffer;
-        this.pos.x = canvas.width / 2 - this.width / 2;
-        this.pos.y = canvas.height / 2 - this.height / 2;
         context.drawImage(buffer, this.pos.x, this.pos.y);
     }
-    flip(card) {
-        if (this.flipped) {
-            this.frames++;
-            card.frameIndexX++;
-            if (card.frameIndexX > 10) {
-                card.frameIndexX = 0;
-                this.flipped = false;
-            }
-            // if (this.frames %  == 0) {
-            // }
-        }
-    }
-    draw(context, time = 0) {
-        const topCard = this.cards[0];
+    drawImage(topCard) {
         const buffer = topCard.buffer;
         const ctx = buffer.getContext("2d");
         buffer.width = this.width;
         buffer.height = this.height;
-
         ctx.drawImage(
-            this.image, // image
-            this.image.height * topCard.frameIndexX, // sx
-            0, // sy
-            this.image.height, // sw
-            this.image.height, // sh
-            0, // dx
-            0, // dy
-            buffer.width, // dw
-            buffer.height, // dh
+            this.image,
+            this.image.height * topCard.frameIndexX, 0,
+            this.image.height, this.image.height,
+            0, 0,
+            buffer.width, buffer.height,
         );
+    }
+    draw(context, time = 0) {
+        const topCard = this.cards[0];
         this.drawToCenter(context, topCard);
+        this.drawImage(topCard);
+
     }
 }
