@@ -12,6 +12,22 @@ export default class Card {
         this.buffer.width = width;
         this.buffer.height = height;
         this.isGrabbed = false;
+        this.frameIndexX = 0;
+        this.frameIndexY = 0;
+        this.flipped = false;
+        this.frames = 0;
+    }
+    flip() {
+        if (this.flipped) {
+            this.frames++;
+            this.frameIndexX++;
+            if (this.frameIndexX > 9) {
+                this.frameIndexX = 10;
+                this.flipped = false;
+            }
+            // if (this.frames %  == 0) {
+            // }
+        }
     }
     setPoistion(x, y) {
         this.pos.x = x;
@@ -23,7 +39,6 @@ export default class Card {
         canvas.addEventListener("mousedown", event => {
             const ex = event.clientX;
             const ey = event.clientY;
-
             const left = player.isHorizontal ? player.pos.x + this.width * this.index : player.pos.x;
             const right = player.isHorizontal ? (player.pos.x + this.width * this.index) + this.width : player.pos.x + this.width;
             const top = player.isHorizontal ? player.pos.y : player.pos.y + this.height * this.index;
@@ -55,7 +70,23 @@ export default class Card {
         });
     }
     draw(context) {
-        this.context.drawImage(this.image, 0, 0, this.width, this.height);
+        this.context.clearRect(0, 0, this.width, this.height);
+        // this.context.translate(0, 0);
+        // this.context.rotate(1);
+        // // this.context.translate(-100, -100);
+        // this.context.scale(1, -1)
+        this.flip();
+        this.context.drawImage(
+            this.image, // image
+            500 * this.frameIndexX, // sx
+            this.height * this.frameIndexY, // sy
+            500, // sw
+            500, // sh
+            0, // dx
+            0, // dy
+            this.width, // dw
+            this.height // dh
+        );
         context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }
