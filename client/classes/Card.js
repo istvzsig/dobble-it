@@ -4,6 +4,7 @@ export default class Card {
     constructor(id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
+        this.playerName = "";
         this.id = id;
         this.image = image;
         this.width = width; //perimeter
@@ -18,6 +19,18 @@ export default class Card {
         this.animationFrames = 0;
         this.animationSqueanceRate = 1;
         this.symbols = symbols;
+    }
+    get left() {
+        return this.player.isHorizontal ? this.player.pos.x + this.width * this.index : this.player.pos.x;
+    }
+    get right() {
+        return this.player.isHorizontal ? (this.player.pos.x + this.width * this.index) + this.width : this.player.pos.x + this.width;
+    }
+    get top() {
+        return this.player.isHorizontal ? this.player.pos.y : this.player.pos.y + this.height * this.index;
+    }
+    get bottom() {
+        return this.player.isHorizontal ? this.player.pos.y + this.height : this.player.pos.y + this.height * this.index + this.height;;
     }
     flip() {
         if (this.flipped) {
@@ -35,34 +48,52 @@ export default class Card {
         this.pos.x = x;
         this.pos.y = y;
     }
-    onMouseEvent(canvas, player, layers) {
+    findMatch(players, event) {
+        players.forEach(targetPlayer => {
+            targetPlayer.cards.forEach(targetCard => {
+                if (event.clientX > targetCard.left
+                    && event.clientX < targetCard.right
+                    && event.clientY > targetCard.top
+                    && event.clientY < targetCard.bottom
+                    && this.playerName !== targetPlayer.name
+                ) {
+                    const attackerName = this.playerName;
+                    const targetName = targetPlayer.name;
+                    const attackerCardSymbols = this.symbols;
+                    const targetCardSymbols = targetCard.symbols;
+                    console.log({ attackerName, targetName, attackerCardSymbols, targetCardSymbols });
+                }
+            });
+        });
+    }
+    onMouseEvent(canvas, players, layers) {
         const lastPosX = this.pos.x;
         const lastPosY = this.pos.y;
         canvas.addEventListener("mousedown", event => {
-            const ex = event.clientX;
             const ey = event.clientY;
-            const left = player.isHorizontal ? player.pos.x + this.width * this.index : player.pos.x;
-            const right = player.isHorizontal ? (player.pos.x + this.width * this.index) + this.width : player.pos.x + this.width;
-            const top = player.isHorizontal ? player.pos.y : player.pos.y + this.height * this.index;
-            const bottom = player.isHorizontal ? player.pos.y + this.height : player.pos.y + this.height * this.index + this.height;
 
-            if (ex > left && ex < right && ey > top && ey < bottom) {
+            if (event.clientX > this.left
+                && event.clientX < this.right
+                && event.clientY > this.top
+                && event.clientY < this.bottom
+            ) {
                 layers[layers.length] = this;
                 this.flipped = true;
                 this.isGrabbed = true;
             }
         });
-        canvas.addEventListener("mouseup", _ => {
+        canvas.addEventListener("mouseup", event => {
             if (this.isGrabbed) {
                 layers.pop();
+                this.findMatch(players, event);
             }
             this.isGrabbed = false;
             this.setPoistion(lastPosX, lastPosY);
         });
         canvas.addEventListener("mousemove", event => {
             if (this.isGrabbed) {
-                let x = event.clientX;
-                let y = event.clientY;
+                const x = event.clientX;
+                const y = event.clientY;
                 this.pos.x = x - this.width / 2;
                 this.pos.y = y - this.height / 2;
                 this.draw(canvas.getContext("2d"));
@@ -74,7 +105,7 @@ export default class Card {
     draw(context) {
         this.context.clearRect(0, 0, this.width, this.height);
         this.animationFrames++;
-        this.flip();
+        // this.flip();
         this.context.drawImage(
             this.image, // image
             this.image.height * this.frameIndexX, // sx

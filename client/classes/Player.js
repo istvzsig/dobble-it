@@ -14,6 +14,18 @@ export default class Player {
         this.buffer.height = this.height;
         this.cards = [];
     }
+    get left() {
+        return this.pos.x;
+    }
+    get right() {
+        return this.pos.x + this.width;
+    }
+    get top() {
+        return this.pos.y;
+    }
+    get bottom() {
+        return this.pos.y + this.height;
+    }
     get isHorizontal() {
         return this.orientation === "HORIZONTAL";
     }
@@ -21,6 +33,8 @@ export default class Player {
         if (!deck) { return }
         for (let i = 0; i < numberOfCards; i++) {
             const card = deck.cards.shift();
+            card.player = this;
+            card.playerName = this.name;
             card.index = i;
             card.pos.x = this.isHorizontal ? this.pos.x + card.width * card.index : this.pos.x;
             card.pos.y = this.isHorizontal ? this.pos.y : this.pos.y + card.height * card.index;

@@ -42,7 +42,7 @@ export default class Game {
     addCardLayers() {
         this.players.forEach(player => {
             player.cards.forEach((card, i) => {
-                card.onMouseEvent(this.canvas, player, this.layerManager.layers);
+                card.onMouseEvent(this.canvas, this.players, this.layerManager.layers);
                 this.layerManager.add(card);
             })
         });
