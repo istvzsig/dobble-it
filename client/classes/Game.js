@@ -17,12 +17,12 @@ export default class Game {
         this.init();
     }
     async init() {
-        const tableBackgroundImage = await loadImage("table-background.jpg");
+        const backgroundImage = await loadImage("table-background.jpg");
         const cardImage = await loadImage("card.png");
         const testPlayers = await loadJSON("test-players");
         const symbols = await loadJSON("symbol-combinations");
 
-        this.background.image = tableBackgroundImage;
+        this.background.image = backgroundImage;
 
         this.deck.create(cardImage, symbols, 55);
         this.deck.shuffle();
