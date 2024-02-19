@@ -36,16 +36,8 @@ export default class Player {
         this.context.lineWidth = 15;
         this.context.strokeRect(0, 0, this.buffer.width, this.buffer.height)
     }
-    drawCards() {
-        this.cards.forEach(card => {
-            card.draw(this.context, this);
-            // this.context.fillRect(0, 0, card.width, 55)
-        });
-    }
     draw(context) {
         this.drawStroke();
-        // this.context.fillRect(0, 0, this.buffer.width, this.buffer.height)
-        // this.drawCards();
         context.drawImage(this.buffer, this.pos.x, this.pos.y);
     }
 }
