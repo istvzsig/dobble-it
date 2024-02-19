@@ -6,6 +6,9 @@ export default class Deck {
         this.height = height;
         this.pos = new Pos(posX, posY);
         this.cards = [];
+        this.frames = 0;
+        this.animationLen = 1000;
+        this.flipped = false;
     }
     create(cardImage, len = 55) {
         this.image = cardImage;
@@ -28,14 +31,38 @@ export default class Deck {
         this.pos.y = canvas.height / 2 - this.height / 2;
         context.drawImage(buffer, this.pos.x, this.pos.y);
     }
-    draw(context) {
+    flip(card) {
+        if (this.flipped) {
+            this.frames++;
+            card.frameIndexX++;
+            if (card.frameIndexX > 10) {
+                card.frameIndexX = 0;
+                this.flipped = false;
+            }
+            // if (this.frames %  == 0) {
+            // }
+        }
+    }
+    draw(context, time = 0) {
         const topCard = this.cards[0];
         const buffer = topCard.buffer;
+        const ctx = buffer.getContext("2d");
         buffer.width = this.width;
         buffer.height = this.height;
-        buffer
-            .getContext("2d")
-            .drawImage(this.image, 0, 0, buffer.width, buffer.height);
+
+        this.flip(topCard);
+
+        ctx.drawImage(
+            this.image, // image
+            500 * topCard.frameIndexX, // sx
+            0, // sy
+            500, // sw
+            500, // sh
+            0, // dx
+            0, // dy
+            buffer.width, // dw
+            buffer.height, // dh
+        );
         this.drawToCenter(context, topCard);
     }
 }
