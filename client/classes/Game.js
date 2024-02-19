@@ -1,5 +1,4 @@
 import LayerManager from "./Layers.js";
-import Matrix from "./Matrix.js";
 import Background from "./Background.js";
 import Player from "./Player.js";
 import Deck from "./Deck.js";
@@ -11,7 +10,6 @@ export default class Game {
         this.context = this.canvas.getContext("2d");
         this.players = [];
         this.layerManager = new LayerManager();
-        this.matrix = new Matrix(7, 6, 100);
         this.background = new Background(this.canvas.width, this.canvas.height);
         this.deck = new Deck(200, 200, 250, 200);
         this.init();
@@ -32,7 +30,6 @@ export default class Game {
 
         this.players.forEach(player => {
             player.addCards(this.deck);
-            // this.layerManager.add(player);
             player.cards.forEach((card, i) => {
                 this.layerManager.add(card);
                 card.onMouseEvent(this.canvas, player, this.layerManager.layers);
@@ -45,7 +42,6 @@ export default class Game {
         });
     }
     createLayers() {
-        this.layerManager.add(this.matrix);
         this.layerManager.add(this.background);
         this.layerManager.add(this.deck);
     }
