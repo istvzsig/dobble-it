@@ -18,13 +18,13 @@ export default class Game {
     }
     async init() {
         const tableBackgroundImage = await loadImage("table-background.jpg");
-        const cardImageBack = await loadImage("card.png");
+        const cardImage = await loadImage("card.png");
         const testPlayers = await loadJSON("test-players");
         const symbols = await loadJSON("symbol-combinations");
 
         this.background.image = tableBackgroundImage;
 
-        this.deck.create(cardImageBack, symbols, 55);
+        this.deck.create(cardImage, symbols, 55);
         this.deck.shuffle();
 
         this.createTestPlayers(testPlayers);
