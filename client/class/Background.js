@@ -1,4 +1,4 @@
-import { Pos } from "../math.js";
+import { Pos } from "./math.js";
 
 export default class Background {
     constructor(width, height, posX = 0, posY = 0) {

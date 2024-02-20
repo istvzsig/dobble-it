@@ -1,5 +1,5 @@
-import EventManager from '../manager/EventManager.js';
-import { Pos, Size } from '../math.js';
+import EventManager from './manager/EventManager.js';
+import { Pos, Size } from './math.js';
 
 export default class Card {
     constructor(id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {

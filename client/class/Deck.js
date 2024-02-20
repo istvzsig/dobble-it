@@ -1,4 +1,4 @@
-import { Pos, Size } from "../math.js";
+import { Pos, Size } from "./math.js";
 import Card from "./Card.js";
 export default class Deck {
     constructor(numberOfCards, width, height, x, y) {
