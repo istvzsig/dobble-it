@@ -49,6 +49,9 @@ export default class Card {
         this.pos.x = x;
         this.pos.y = y;
     }
+    intersection(attackerCardSymbols, targetCardSymbols) {
+        return attackerCardSymbols.filter(symbol => targetCardSymbols.includes(symbol));
+    }
     findMatch(players, event) {
         players.forEach(targetPlayer => {
             targetPlayer.cards.forEach(targetCard => {
@@ -62,7 +65,8 @@ export default class Card {
                     const targetName = targetPlayer.name;
                     const attackerCardSymbols = this.symbols;
                     const targetCardSymbols = targetCard.symbols;
-                    console.log({ attackerName, targetName, attackerCardSymbols, targetCardSymbols });
+                    const c = this.intersection(attackerCardSymbols, targetCardSymbols);
+                    console.log(c)
                 }
             });
         });
