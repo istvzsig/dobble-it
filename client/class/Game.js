@@ -1,6 +1,6 @@
-import LayerManager from "./managers/LayerManager.js";
+import LayerManager from "./manager/LayerManager.js";
 import Background from "./ui/Background.js";
-import PlayerManager from "./managers/PlayerManager.js";
+import PlayerManager from "./manager/PlayerManager.js";
 import Deck from "./ui/Deck.js";
 import { Size } from "./math.js";
 import { loadImage, loadJSON } from "../util/loaders.js";
