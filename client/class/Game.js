@@ -1,9 +1,9 @@
-import LayerManager from "./Layers.js";
-import Background from "./Background.js";
-import PlayerManager from "./PlayerManager.js";
-import Deck from "./Deck.js";
-import { Size } from "../math.js";
-import { loadImage, loadJSON } from "../loaders.js";
+import LayerManager from "./managers/LayerManager.js";
+import Background from "./ui/Background.js";
+import PlayerManager from "./managers/PlayerManager.js";
+import Deck from "./ui/Deck.js";
+import { Size } from "./math.js";
+import { loadImage, loadJSON } from "../util/loaders.js";
 
 export default class Game {
     constructor() {

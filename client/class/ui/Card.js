@@ -1,4 +1,4 @@
-import EventManager from './EventManager.js';
+import EventManager from '../managers/EventManager.js';
 import { Pos, Size } from '../math.js';
 
 export default class Card {

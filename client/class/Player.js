@@ -1,4 +1,4 @@
-import { Pos, Size } from '../math.js';
+import { Pos, Size } from './math.js';
 
 export default class Player {
     constructor(data) {
