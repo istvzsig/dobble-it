@@ -1,10 +1,9 @@
 import LayerManager from "./Layers.js";
 import Background from "./Background.js";
-import Player from "./Player.js";
+import PlayerManager from "./PlayerManager.js";
 import Deck from "./Deck.js";
 import { Size } from "../math.js";
 import { loadImage, loadJSON } from "../loaders.js";
-
 
 export default class Game {
     constructor() {
@@ -14,9 +13,9 @@ export default class Game {
         this.canvas.width = this.size.width;
         this.canvas.height = this.size.height;
         this.layerManager = new LayerManager();
+        this.playerManager = new PlayerManager();
         this.background = new Background(this.canvas.width, this.canvas.height);
         this.deck = new Deck(55, 200, 200, this.size.width / 2, this.size.height / 2);
-        this.players = [];
         this.init();
     }
     async init() {
@@ -26,32 +25,12 @@ export default class Game {
         this.background.image = await loadImage("table-background.jpg");
 
         this.createDeckAndShuffle(cardImage, symbols);
-        this.createPlayers(playerData);
-        this.addLayers();
+        this.playerManager.createFromConfig(playerData, this.deck);
+        this.playerManager.createCardLayers(this.canvas, this.layerManager);
     }
     createDeckAndShuffle(cardImage, symbols) {
         this.deck.create(cardImage, symbols);
         this.deck.shuffle();
-    }
-    createPlayers(playerData) {
-        playerData.forEach(data => {
-            const player = new Player(data);
-            player.setCards(this.deck);
-            this.players.push(player);
-        });
-    }
-    addCardLayers() {
-        this.players.forEach(player => {
-            player.cards.forEach((card, i) => {
-                card.onMouseEvent(this.canvas, this.players, this.layerManager.layers);
-                this.layerManager.add(card);
-            })
-        });
-    }
-    addLayers(data) {
-        // this.layerManager.add(this.background);
-        // this.layerManager.add(this.deck);
-        this.addCardLayers(data);
     }
     start() {
         this.context.fillStyle = "navy";
