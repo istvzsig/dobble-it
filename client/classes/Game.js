@@ -16,21 +16,20 @@ export default class Game {
         this.playerManager = new PlayerManager();
         this.background = new Background(this.canvas.width, this.canvas.height);
         this.deck = new Deck(55, 200, 200, this.size.width / 2, this.size.height / 2);
-        this.init();
+        this.load();
     }
-    async init() {
+    async load() {
         const playerData = await loadJSON("data");
         const cardImage = await loadImage("card.png");
         const symbols = await loadJSON("symbol-combinations");
         this.background.image = await loadImage("table-background.jpg");
 
-        this.createDeckAndShuffle(cardImage, symbols);
-        this.playerManager.createFromConfig(playerData, this.deck);
-        this.playerManager.createCardLayers(this.canvas, this.layerManager);
-    }
-    createDeckAndShuffle(cardImage, symbols) {
         this.deck.create(cardImage, symbols);
         this.deck.shuffle();
+        // this.layerManager.add(this.background);
+        // this.layerManager.add(this.deck);
+        this.playerManager.createFromConfig(playerData, this.deck);
+        this.playerManager.createCardLayers(this.canvas, this.layerManager);
     }
     start() {
         this.context.fillStyle = "navy";
