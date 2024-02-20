@@ -1,292 +1,292 @@
 [
     {
         "name": "anchor",
-        "row": 0,
-        "col": 0
+        "x": 0,
+        "y": 0
     },
     {
         "name": "apple",
-        "row": 0,
-        "col": 1
+        "x": 0,
+        "y": 1
     },
     {
         "name": "babybottle",
-        "row": 0,
-        "col": 2
+        "x": 0,
+        "y": 2
     },
     {
         "name": "bird",
-        "row": 4,
-        "col": 3
+        "x": 4,
+        "y": 3
     },
     {
         "name": "bomb",
-        "row": 0,
-        "col": 3
+        "x": 0,
+        "y": 3
     },
     {
         "name": "cactus",
-        "row": 0,
-        "col": 4
+        "x": 0,
+        "y": 4
     },
     {
         "name": "candle",
-        "row": 0,
-        "col": 2
+        "x": 0,
+        "y": 2
     },
     {
         "name": "carrot",
-        "row": 0,
-        "col": 7
+        "x": 0,
+        "y": 7
     },
     {
         "name": "cat",
-        "row": 4,
-        "col": 4
+        "x": 4,
+        "y": 4
     },
     {
         "name": "candle",
-        "row": 0,
-        "col": 2
+        "x": 0,
+        "y": 2
     },
     {
         "name": "cheese",
-        "row": 7,
-        "col": 0
+        "x": 7,
+        "y": 0
     },
     {
         "name": "chessknight",
-        "row": 1,
-        "col": 0
+        "x": 1,
+        "y": 0
     },
     {
         "name": "clock",
-        "row": 1,
-        "col": 1
+        "x": 1,
+        "y": 1
     },
     {
         "name": "clown",
-        "row": 1,
-        "col": 2
+        "x": 1,
+        "y": 2
     },
     {
         "name": "crosshairs",
-        "row": 5,
-        "col": 7
+        "x": 5,
+        "y": 7
     },
     {
         "name": "diasyflower",
-        "row": 1,
-        "col": 3
+        "x": 1,
+        "y": 3
     },
     {
         "name": "dinosaur",
-        "row": 1,
-        "col": 4
+        "x": 1,
+        "y": 4
     },
     {
         "name": "dog",
-        "row": 6,
-        "col": 4
+        "x": 6,
+        "y": 4
     },
     {
         "name": "dolphin",
-        "row": 1,
-        "col": 5
+        "x": 1,
+        "y": 5
     },
     {
         "name": "dragon",
-        "row": 1,
-        "col": 6
+        "x": 1,
+        "y": 6
     },
     {
         "name": "exclamationpoint",
-        "row": 1,
-        "col": 7
+        "x": 1,
+        "y": 7
     },
     {
         "name": "eye",
-        "row": 2,
-        "col": 0
+        "x": 2,
+        "y": 0
     },
     {
         "name": "fire",
-        "row": 2,
-        "col": 1
+        "x": 2,
+        "y": 1
     },
     {
         "name": "fourleafclover",
-        "row": 2,
-        "col": 2
+        "x": 2,
+        "y": 2
     },
     {
         "name": "ghost",
-        "row": 2,
-        "col": 3
+        "x": 2,
+        "y": 3
     },
     {
         "name": "hammer",
-        "row": 2,
-        "col": 5
+        "x": 2,
+        "y": 5
     },
     {
         "name": "hand",
-        "row": 4,
-        "col": 5
+        "x": 4,
+        "y": 5
     },
     {
         "name": "heart",
-        "row": 2,
-        "col": 6
+        "x": 2,
+        "y": 6
     },
     {
         "name": "icecube",
-        "row": 2,
-        "col": 7
+        "x": 2,
+        "y": 7
     },
     {
         "name": "igloo",
-        "row": 3,
-        "col": 0
+        "x": 3,
+        "y": 0
     },
     {
         "name": "key",
-        "row": 3,
-        "col": 1
+        "x": 3,
+        "y": 1
     },
     {
         "name": "ladybug",
-        "row": 3,
-        "col": 2
+        "x": 3,
+        "y": 2
     },
     {
         "name": "ink",
-        "row": 2,
-        "col": 4
+        "x": 2,
+        "y": 4
     },
     {
         "name": "lightbulb",
-        "row": 3,
-        "col": 3
+        "x": 3,
+        "y": 3
     },
     {
         "name": "lightningbolt",
-        "row": 3,
-        "col": 4
+        "x": 3,
+        "y": 4
     },
     {
         "name": "lock",
-        "row": 3,
-        "col": 5
+        "x": 3,
+        "y": 5
     },
     {
         "name": "mapleleaf",
-        "row": 3,
-        "col": 6
+        "x": 3,
+        "y": 6
     },
     {
         "name": "moon",
-        "row": 3,
-        "col": 7
+        "x": 3,
+        "y": 7
     },
     {
         "name": "noentrysign",
-        "row": 4,
-        "col": 0
+        "x": 4,
+        "y": 0
     },
     {
         "name": "pencil",
-        "row": 4,
-        "col": 2
+        "x": 4,
+        "y": 2
     },
     {
         "name": "questionmark",
-        "row": 6,
-        "col": 7
+        "x": 6,
+        "y": 7
     },
     {
         "name": "redlips",
-        "row": 4,
-        "col": 6
+        "x": 4,
+        "y": 6
     },
     {
         "name": "scarecrow",
-        "row": 4,
-        "col": 1
+        "x": 4,
+        "y": 1
     },
     {
         "name": "scissors",
-        "row": 4,
-        "col": 7
+        "x": 4,
+        "y": 7
     },
     {
         "name": "skull",
-        "row": 5,
-        "col": 0
+        "x": 5,
+        "y": 0
     },
     {
         "name": "snowflake",
-        "row": 5,
-        "col": 1
+        "x": 5,
+        "y": 1
     },
     {
         "name": "snowman",
-        "row": 5,
-        "col": 2
+        "x": 5,
+        "y": 2
     },
     {
         "name": "spider",
-        "row": 5,
-        "col": 3
+        "x": 5,
+        "y": 3
     },
     {
         "name": "spiderweb",
-        "row": 5,
-        "col": 4
+        "x": 5,
+        "y": 4
     },
     {
         "name": "sun",
-        "row": 5,
-        "col": 5
+        "x": 5,
+        "y": 5
     },
     {
         "name": "sunglasses",
-        "row": 5,
-        "col": 6
+        "x": 5,
+        "y": 6
     },
     {
         "name": "taxicar",
-        "row": 0,
-        "col": 6
+        "x": 0,
+        "y": 6
     },
     {
         "name": "tortoise",
-        "row": 6,
-        "col": 0
+        "x": 6,
+        "y": 0
     },
     {
         "name": "trebleclef",
-        "row": 6,
-        "col": 1
+        "x": 6,
+        "y": 1
     },
     {
         "name": "tree",
-        "row": 6,
-        "col": 2
+        "x": 6,
+        "y": 2
     },
     {
         "name": "waterdrip",
-        "row": 6,
-        "col": 3
+        "x": 6,
+        "y": 3
     },
     {
         "name": "yinyang",
-        "row": 6,
-        "col": 5
+        "x": 6,
+        "y": 5
     },
     {
         "name": "zebra",
-        "row": 6,
-        "col": 6
+        "x": 6,
+        "y": 6
     }
 ]
