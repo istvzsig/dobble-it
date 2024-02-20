@@ -1,3 +1,4 @@
+import EventManager from './EventManager.js';
 import { Pos, Size } from '../math.js';
 
 export default class Card {
@@ -17,6 +18,7 @@ export default class Card {
         this.flipped = false;
         this.animationFrames = 0;
         this.animationSqueanceRate = 1;
+        this.eventManager = new EventManager();
         this.symbols = symbols;
     }
     get left() {
@@ -65,41 +67,39 @@ export default class Card {
             });
         });
     }
+    onMouseDown(event, layers, target) {
+        if (event.clientX > target.left
+            && event.clientX < target.right
+            && event.clientY > target.top
+            && event.clientY < target.bottom
+        ) {
+            layers[layers.length] = target;
+            target.flipped = true;
+            target.isGrabbed = true;
+        }
+    }
+    onMouseUp(event, players, layers, lastPosX, lastPosY, target) {
+        if (target.isGrabbed) {
+            layers.pop();
+            target.findMatch(players, event);
+        }
+        target.isGrabbed = false;
+        target.setPoistion(lastPosX, lastPosY);
+    }
+    onMouseMove(event, canvas, target) {
+        if (target.isGrabbed) {
+            const x = event.clientX;
+            const y = event.clientY;
+            target.pos.x = x - target.size.width / 2;
+            target.pos.y = y - target.size.height / 2;
+            target.draw(canvas.getContext("2d"));
+        }
+        canvas.getContext("2d").drawImage(target.buffer, target.pos.x, target.pos.y);
+    }
     onMouseEvent(canvas, players, layers) {
-        const lastPosX = this.pos.x;
-        const lastPosY = this.pos.y;
-        canvas.addEventListener("mousedown", event => {
-            const ey = event.clientY;
-
-            if (event.clientX > this.left
-                && event.clientX < this.right
-                && event.clientY > this.top
-                && event.clientY < this.bottom
-            ) {
-                layers[layers.length] = this;
-                this.flipped = true;
-                this.isGrabbed = true;
-            }
-        });
-        canvas.addEventListener("mouseup", event => {
-            if (this.isGrabbed) {
-                layers.pop();
-                this.findMatch(players, event);
-            }
-            this.isGrabbed = false;
-            this.setPoistion(lastPosX, lastPosY);
-        });
-        canvas.addEventListener("mousemove", event => {
-            if (this.isGrabbed) {
-                const x = event.clientX;
-                const y = event.clientY;
-                this.pos.x = x - this.size.width / 2;
-                this.pos.y = y - this.size.height / 2;
-                this.draw(canvas.getContext("2d"));
-            }
-            // debugger;
-            canvas.getContext("2d").drawImage(this.buffer, this.pos.x, this.pos.y);
-        });
+        this.eventManager.emit(canvas, "mousedown", this.onMouseDown, layers, this);
+        this.eventManager.emit(canvas, "mouseup", this.onMouseUp, players, layers, this.pos.x, this.pos.y, this);
+        this.eventManager.emit(canvas, "mousemove", this.onMouseMove, canvas, this);
     }
     draw(context) {
         this.context.clearRect(0, 0, this.size.width, this.size.height);
