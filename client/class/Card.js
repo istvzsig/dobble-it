@@ -2,8 +2,9 @@ import EventManager from './manager/EventManager.js';
 import { Pos, Size } from './math.js';
 
 export default class Card {
-    constructor(id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
+    constructor(game, id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
         this.buffer = document.createElement("canvas");
+        this.game = game;
         this.context = this.buffer.getContext("2d");
         this.playerName = "";
         this.id = id;
@@ -53,6 +54,7 @@ export default class Card {
         return attackerCardSymbols.filter(symbol => targetCardSymbols.includes(symbol));
     }
     findMatch(players, event) {
+        console.log(this.game.layerManager.layers);
         players.forEach(targetPlayer => {
             targetPlayer.cards.forEach(targetCard => {
                 if (event.clientX > targetCard.left
@@ -61,12 +63,16 @@ export default class Card {
                     && event.clientY < targetCard.bottom
                     && this.playerName !== targetPlayer.name
                 ) {
-                    const attackerName = this.playerName;
-                    const targetName = targetPlayer.name;
                     const attackerCardSymbols = this.symbols;
                     const targetCardSymbols = targetCard.symbols;
-                    const c = this.intersection(attackerCardSymbols, targetCardSymbols);
-                    console.log(c)
+
+                    if (this.intersection(attackerCardSymbols, targetCardSymbols)) {
+                        const attackerPlayer = players.filter(p => p.name === this.playerName)[0];
+                        const layerManagerIndexOfThisCard = this.game.layerManager.layers.indexOf(this);
+
+                        this.game.layerManager.layers.splice(layerManagerIndexOfThisCard, 1);
+                        targetPlayer.cards.push(...attackerPlayer.cards.splice(targetCard, 1));
+                    }
                 }
             });
         });
@@ -84,8 +90,8 @@ export default class Card {
     }
     onMouseUp(event, players, layers, lastPosX, lastPosY, target) {
         if (target.isGrabbed) {
-            layers.pop();
             target.findMatch(players, event);
+            layers.pop();
         }
         target.isGrabbed = false;
         target.setPoistion(lastPosX, lastPosY);

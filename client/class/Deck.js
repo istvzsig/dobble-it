@@ -1,7 +1,8 @@
 import { Pos, Size } from "./math.js";
 import Card from "./Card.js";
 export default class Deck {
-    constructor(numberOfCards, width, height, x, y) {
+    constructor(game, numberOfCards, width, height, x, y) {
+        this.game = game;
         this.numberOfCards = numberOfCards;
         this.size = new Size(width, height);
         this.pos = new Pos(x - this.size.width / 2, y - this.size.height / 2);
@@ -11,7 +12,7 @@ export default class Deck {
     create(cardImage, symbols) {
         this.image = cardImage;
         for (let index = 0; index < this.numberOfCards; ++index) {
-            const card = new Card(index, cardImage, symbols[index], 100, 100);
+            const card = new Card(this.game, index, cardImage, symbols[index], 100, 100);
             this.cards.push(card);
         }
     }

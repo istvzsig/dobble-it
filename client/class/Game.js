@@ -1,7 +1,7 @@
 import LayerManager from "./manager/LayerManager.js";
-import Background from "./ui/Background.js";
+import Background from "./Background.js";
 import PlayerManager from "./manager/PlayerManager.js";
-import Deck from "./ui/Deck.js";
+import Deck from "./Deck.js";
 import { Size } from "./math.js";
 import { loadImage, loadJSON } from "../util/loaders.js";
 
@@ -15,7 +15,7 @@ export default class Game {
         this.layerManager = new LayerManager();
         this.playerManager = new PlayerManager();
         this.background = new Background(this.canvas.width, this.canvas.height);
-        this.deck = new Deck(55, 200, 200, this.size.width / 2, this.size.height / 2);
+        this.deck = new Deck(this, 55, 200, 200, this.size.width / 2, this.size.height / 2);
         this.load();
     }
     async load() {
