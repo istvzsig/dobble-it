@@ -3,14 +3,15 @@ import { Pos, Size } from './math.js';
 
 export default class Card {
     constructor(game, id = 0, image = Image, symbols = [], width = 0, height = 0, posX = 0, posY = 0) {
-        this.buffer = document.createElement("canvas");
         this.game = game;
+        this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
         this.playerName = "";
         this.id = id;
         this.image = image;
         this.size = new Size(width, height);
         this.pos = new Pos(posX, posY);
+        this.eventManager = new EventManager();
         this.buffer.width = this.size.width;
         this.buffer.height = this.size.height;
         this.isGrabbed = false;
@@ -19,7 +20,6 @@ export default class Card {
         this.flipped = false;
         this.animationFrames = 0;
         this.animationSqueanceRate = 1;
-        this.eventManager = new EventManager();
         this.symbols = symbols;
     }
     get left() {
@@ -53,63 +53,79 @@ export default class Card {
     intersection(attackerCardSymbols, targetCardSymbols) {
         return attackerCardSymbols.filter(symbol => targetCardSymbols.includes(symbol));
     }
-    findMatch(players, event) {
-        console.log(this.game.layerManager.layers);
+    findMatch(event) {
+        const players = this.game.playerManager.players;
         players.forEach(targetPlayer => {
             targetPlayer.cards.forEach(targetCard => {
                 if (event.clientX > targetCard.left
                     && event.clientX < targetCard.right
                     && event.clientY > targetCard.top
                     && event.clientY < targetCard.bottom
-                    && this.playerName !== targetPlayer.name
-                ) {
-                    const attackerCardSymbols = this.symbols;
-                    const targetCardSymbols = targetCard.symbols;
+                    && this.playerName !== targetPlayer.name) {
 
-                    if (this.intersection(attackerCardSymbols, targetCardSymbols)) {
-                        const attackerPlayer = players.filter(p => p.name === this.playerName)[0];
+                    if (this.intersection(this.symbols, targetCard.symbols)) {
+                        const attackerPlayer = players.filter(targetPlayer => targetPlayer.name === this.playerName)[0];
                         const layerManagerIndexOfThisCard = this.game.layerManager.layers.indexOf(this);
+                        const layerManagerIndeOfTargetCard = this.game.layerManager.layers.indexOf(targetCard);
+                        const layerManager = this.game.layerManager.layers;
 
-                        this.game.layerManager.layers.splice(layerManagerIndexOfThisCard, 1);
-                        targetPlayer.cards.push(...attackerPlayer.cards.splice(targetCard, 1));
+                        console.log(this.lastPosX, this.lastPosY)
+                        try {
+                            layerManager.splice(layerManagerIndexOfThisCard, 1);
+                            targetCard.name = targetPlayer.name;
+
+                            const attackerPlayerUsedCard = attackerPlayer.cards.splice(this, 1)[0];
+                            attackerPlayerUsedCard.playerName = targetPlayer.name;
+                            targetPlayer.cards.push(attackerPlayerUsedCard);
+                            attackerPlayer.getCardFromDeckAndAddToLayerManager(this.lastPosX, this.lastPosY, this.index);
+                            layerManager.splice(layerManagerIndeOfTargetCard, 1);
+                        } catch (err) {
+                            throw new Error(err);
+                        }
+                        return this.setPoistion(this.x, this.y);
                     }
+                    // this.setPoistion(this.pos.x, this.pos.y);
                 }
+                // console.log("no matches", this.x, this.y);
             });
         });
     }
-    onMouseDown(event, layers, target) {
-        if (event.clientX > target.left
-            && event.clientX < target.right
-            && event.clientY > target.top
-            && event.clientY < target.bottom
+    onMouseDown(event, card = this) {
+        const layers = card.game.layerManager.layers;
+        if (event.clientX > card.left
+            && event.clientX < card.right
+            && event.clientY > card.top
+            && event.clientY < card.bottom
         ) {
-            layers[layers.length] = target;
-            target.flipped = true;
-            target.isGrabbed = true;
+            layers[layers.length] = card;
+            card.flipped = true;
+            card.isGrabbed = true;
         }
     }
-    onMouseUp(event, players, layers, lastPosX, lastPosY, target) {
-        if (target.isGrabbed) {
-            target.findMatch(players, event);
-            layers.pop();
+    onMouseUp(event, t = this) {
+        if (t.isGrabbed) {
+            t.findMatch(event);
         }
-        target.isGrabbed = false;
-        target.setPoistion(lastPosX, lastPosY);
+        t.isGrabbed = false;
     }
-    onMouseMove(event, canvas, target) {
-        if (target.isGrabbed) {
+    onMouseMove(event, card = this) {
+        const canvas = card.game.canvas;
+
+        if (card.isGrabbed) {
             const x = event.clientX;
             const y = event.clientY;
-            target.pos.x = x - target.size.width / 2;
-            target.pos.y = y - target.size.height / 2;
-            target.draw(canvas.getContext("2d"));
+            card.pos.x = x - card.size.width / 2;
+            card.pos.y = y - card.size.height / 2;
+            card.draw(canvas.getContext("2d"));
         }
-        canvas.getContext("2d").drawImage(target.buffer, target.pos.x, target.pos.y);
+        canvas.getContext("2d").drawImage(card.buffer, card.pos.x, card.pos.y);
     }
-    onMouseEvent(canvas, players, layers) {
-        this.eventManager.emit(canvas, "mousedown", this.onMouseDown, layers, this);
-        this.eventManager.emit(canvas, "mouseup", this.onMouseUp, players, layers, this.pos.x, this.pos.y, this);
-        this.eventManager.emit(canvas, "mousemove", this.onMouseMove, canvas, this);
+    onMouseEvent() {
+        const canvas = this.game.canvas;
+
+        this.eventManager.emit(canvas, "mousedown", this.onMouseDown, this);
+        this.eventManager.emit(canvas, "mouseup", this.onMouseUp, this);
+        this.eventManager.emit(canvas, "mousemove", this.onMouseMove, this);
     }
     draw(context) {
         this.context.clearRect(0, 0, this.size.width, this.size.height);

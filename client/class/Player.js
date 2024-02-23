@@ -1,7 +1,8 @@
 import { Pos, Size } from './math.js';
 
 export default class Player {
-    constructor(data) {
+    constructor(data, game) {
+        this.game = game;
         this.buffer = document.createElement("canvas");
         this.context = this.buffer.getContext("2d");
         this.id = data.id;
@@ -28,16 +29,38 @@ export default class Player {
     get isHorizontal() {
         return this.orientation === "HORIZONTAL";
     }
-    setCards(deck, numberOfCards = 2) {
+    getCardsFromDeck(numberOfCards) {
+        const deck = this.game.deck;
         if (!deck) { return }
         for (let i = 0; i < numberOfCards; i++) {
             const card = deck.cards.shift();
             card.player = this;
             card.playerName = this.name;
-            card.index = i;
+            card.index = this.cards.length % 2 === 0 ? 0 : 1;
             card.pos.x = this.isHorizontal ? this.pos.x + card.size.width * card.index : this.pos.x;
             card.pos.y = this.isHorizontal ? this.pos.y : this.pos.y + card.size.height * card.index;
+            card.lastPosX = card.pos.x;
+            card.lastPosY = card.pos.y;
             this.cards.push(card);
         }
+    }
+    addCardsToLayerManager() {
+        const layerManager = this.game.layerManager;
+        this.cards.forEach(card => {
+
+            card.onMouseEvent();
+            layerManager.add(card);
+        })
+    }
+    getCardFromDeckAndAddToLayerManager(x, y, index) {
+        const layerManager = this.game.layerManager;
+        const newCard = this.game.deck.cards.shift();
+        newCard.playerName = this.name;
+        newCard.index = index;
+
+        newCard.pos.x = x;
+        newCard.pos.y = y;
+        console.log(newCard)
+        layerManager.add(newCard);
     }
 }

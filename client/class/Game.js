@@ -13,7 +13,7 @@ export default class Game {
         this.canvas.width = this.size.width;
         this.canvas.height = this.size.height;
         this.layerManager = new LayerManager();
-        this.playerManager = new PlayerManager();
+        this.playerManager = new PlayerManager(this);
         this.background = new Background(this.canvas.width, this.canvas.height);
         this.deck = new Deck(this, 55, 200, 200, this.size.width / 2, this.size.height / 2);
         this.load();
@@ -29,7 +29,6 @@ export default class Game {
         // this.layerManager.add(this.background);
         // this.layerManager.add(this.deck);
         this.playerManager.createFromConfig(playerData, this.deck);
-        this.playerManager.createCardLayers(this.canvas, this.layerManager);
     }
     start() {
         this.context.fillStyle = "navy";

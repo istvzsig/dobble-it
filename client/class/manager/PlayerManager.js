@@ -1,22 +1,16 @@
 import Player from "../Player.js";
 
 export default class PlayerManager {
-    constructor() {
+    constructor(game) {
+        this.game = game;
         this.players = [];
     }
-    createFromConfig(config, deck) {
+    createFromConfig(config) {
         config.forEach(data => {
-            const player = new Player(data);
-            player.setCards(deck);
+            const player = new Player(data, this.game);
+            player.getCardsFromDeck(2);
             this.players.push(player);
-        });
-    }
-    createCardLayers(canvas, layerManager) {
-        this.players.forEach(player => {
-            player.cards.forEach((card, i) => {
-                card.onMouseEvent(canvas, this.players, layerManager.layers);
-                layerManager.add(card);
-            })
+            player.addCardsToLayerManager();
         });
     }
 }
